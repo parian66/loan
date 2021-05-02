@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/loan
+    username: loanuser
+    password: loanuser
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  h2.console.enabled: false
+# App Properties
+app:
+  jwtSecret: bezKoderSecretKey
+  jwtExpirationMs: 86400000
