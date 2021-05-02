@@ -13,5 +13,5 @@ spring:
   h2.console.enabled: false
 # App Properties
 app:
-  jwtSecret: bezKoderSecretKey
+  jwtSecret: dev-secret-key
   jwtExpirationMs: 86400000
