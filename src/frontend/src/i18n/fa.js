@@ -37,7 +37,7 @@ export default {
   members: 'اعضا',
   nationalCode: 'کد ملی',
   newLoan: 'وام جدید',
-  newMember: 'هضو جدید',
+  newMember: 'عضو جدید',
   nextInstallmentDate: 'سررسید بعدی',
   lastInstallmentDate: 'آخرین سررسید',
   number: 'شماره',
