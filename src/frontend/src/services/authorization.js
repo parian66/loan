@@ -15,7 +15,7 @@ export default {
   },
 
   async login ({ username, password }) {
-    const user = await axios.post('/api/auth/login', { username, password })
+    const user = await axios.post('/auth/login', { username, password })
     localStorage.setItem('user', JSON.stringify(user))
   },
 
