@@ -1,13 +1,9 @@
 package ir.parian.loan.service;
 
-import ir.parian.loan.data.entity.InstallmentEntity;
-import ir.parian.loan.data.entity.LoanEntity;
-import ir.parian.loan.data.entity.MemberEntity;
-import ir.parian.loan.service.dto.InstallmentDto;
-import ir.parian.loan.service.dto.LoanDto;
-import ir.parian.loan.service.dto.MemberDto;
-import ir.parian.loan.service.dto.NewLoanDto;
+import ir.parian.loan.data.entity.*;
+import ir.parian.loan.service.dto.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -27,4 +23,16 @@ public interface ServiceMapper {
     InstallmentDto toInstallmentDto(InstallmentEntity installmentEntity);
 
     List<InstallmentDto> toInstallmentDtos(List<InstallmentEntity> installmentEntities);
+
+    MemberAccountDto toMemberAccountDto(MemberAccountEntity memberAccountEntity);
+
+    TransactionDto toTransactionDto(TransactionEntity transactionEntity);
+
+    MonthlyDto toMonthlyDto(MonthlyEntity monthlyEntity);
+
+    UserDto toUserDto(UserEntity userEntity);
+
+    void fillUserEntity(UserDto userDto, @MappingTarget UserEntity entity);
+
+    SystemAccountDto toSystemAccountDto(SystemAccountEntity systemAccountEntity);
 }

@@ -9,9 +9,11 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
 @Data
+@Entity(name = InstallmentEntity.TABLE)
 public class InstallmentEntity extends AbstractAuditable<Long> {
+    public static final String TABLE = "installment";
+
     @ManyToOne
     private LoanEntity loan;
 

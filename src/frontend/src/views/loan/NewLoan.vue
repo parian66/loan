@@ -1,89 +1,90 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <span class="headline">{{ $t('newLoan') }}</span>
-    </v-card-title>
-    <v-card-text>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <validation-observer ref="observer" v-slot="{ invalid }">
-        <form @submit.prevent="save">
+  <validation-observer ref="observer" v-slot="{ invalid }">
+    <form @submit.prevent="save">
+      <v-card>
+
+        <v-card-title>
+          <span class="headline">{{ $t('newLoan') }}</span>
+        </v-card-title>
+
+        <v-card-text>
+
+          <v-alert v-if="error" type="error">{{ error }}</v-alert>
+
           <v-container>
             <v-row>
-              <v-col>
+              <v-col cols="12" sm="6" md="3">
                 <MemberPicker v-model="memberId" />
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <validation-provider
-                    v-slot="{ errors }"
-                    :name="$t('amount')"
-                    rules="required">
-                  <currency-field
-                      v-model="amount"
-                      :label="$t('amount')"
-                      :error-messages="errors" />
-                </validation-provider>
+
+              <v-col cols="12" sm="6" md="3">
+                <currency-field
+                  v-model="amount"
+                  :label="$t('amount')"
+                  rules="required" />
               </v-col>
-              <v-col>
+
+              <v-col cols="12" sm="6" md="3">
                 <validation-provider
-                    v-slot="{ errors }"
-                    :name="$t('commissionRate')"
-                    rules="required|numeric|min_value:1|max_value:10">
+                  v-if="!disabled"
+                  v-slot="{ errors }"
+                  :name="$t('commissionRate')"
+                  rules="required|numeric|min_value:1|max_value:10">
                   <v-text-field
-                      v-model="rate"
-                      :label="$t('commissionRate')"
-                      suffix="%"
-                      :error-messages="errors" />
+                    v-model="rate"
+                    :label="$t('commissionRate')"
+                    :error-messages="errors"
+                    suffix="%" />
                 </validation-provider>
               </v-col>
-              <v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" sm="6" md="3">
                 <currency-field
-                    v-model="principal"
-                    :label="$t('principal')"
-                    :readonly="true" />
+                  v-model="principal"
+                  :label="$t('principal')"
+                  :readonly="true" />
               </v-col>
-              <v-col>
+
+              <v-col cols="12" sm="6" md="3">
                 <currency-field
-                    v-model="commission"
-                    :label="$t('commission')"
-                    :readonly="true" />
+                  v-model="commission"
+                  :label="$t('commission')"
+                  :readonly="true" />
+              </v-col>
+
+              <v-col cols="12" sm="6" md="3">
+                <date-picker
+                  v-model="firstInstallmentDate"
+                  :label="$t('firstInstallmentDate')"
+                  rules="required" />
               </v-col>
             </v-row>
             <v-row>
-              <v-col>
+              <v-col cols="12" sm="6" md="3">
+
                 <validation-provider
-                    v-slot="{ errors }"
-                    :name="$t('firstInstallmentDate')"
-                    rules="required">
-                  <date-picker
-                      v-model="firstInstallmentDate"
-                      :label="$t('firstInstallmentDate')"
-                      :error-messages="errors" />
+                  v-slot="{ errors }"
+                  :name="$t('installmentCount')"
+                  rules="required|numeric|min_value:1|max_value:10">
+                  <v-text-field
+                    v-model="installmentCount"
+                    :label="$t('installmentCount')"
+                    :error-messages="errors" />
                 </validation-provider>
               </v-col>
 
-              <v-col>
-                <validation-provider
-                    v-slot="{ errors }"
-                    :name="$t('installmentCount')"
-                    rules="required|numeric|min_value:1|max_value:10">
-                  <v-text-field
-                      v-model="installmentCount"
-                      :label="$t('installmentCount')"
-                      :error-messages="errors" />
-                </validation-provider>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
+              <v-col cols="12" sm="12" md="6">
                 <v-textarea
-                    rows="1"
-                    :label="$t('description')"
-                    v-model="description" />
+                  rows="1"
+                  :label="$t('description')"
+                  v-model="description" />
               </v-col>
+
             </v-row>
           </v-container>
+
           <v-simple-table v-if="!invalid">
             <template v-slot:default>
               <thead>
@@ -106,15 +107,21 @@
               </tbody>
             </template>
           </v-simple-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="back">
+            {{ $t('cancel') }}
+          </v-btn>
 
-          <v-btn @click="back">{{ $t('back') }}</v-btn>
+          <v-spacer />
+
           <v-btn type="submit" :disabled="invalid">
             {{ $t('save') }}
           </v-btn>
-        </form>
-      </validation-observer>
-    </v-card-text>
-  </v-card>
+        </v-card-actions>
+      </v-card>
+    </form>
+  </validation-observer>
 </template>
 
 <script>
@@ -126,7 +133,6 @@ import DatePicker from '../../components/DatePicker'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 
 export default {
-  name: 'NewLoan',
   components: { ValidationObserver, ValidationProvider, MemberPicker, CurrencyField, DatePicker },
   data () {
     return {
@@ -137,11 +143,6 @@ export default {
       installmentCount: undefined,
       firstInstallmentDate: undefined,
       description: undefined,
-      memberLookup: {
-        loading: false,
-        search: undefined,
-        items: []
-      }
     }
   },
 

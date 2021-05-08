@@ -6,9 +6,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
 @Data
+@Entity(name = MemberEntity.TABLE)
 public class MemberEntity extends AbstractPersistable<Long> {
+    public static final String TABLE = "member";
+
     @Column(nullable = false)
     private String firstName;
 

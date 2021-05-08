@@ -7,9 +7,11 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
 @Data
+@Entity(name = LoanEntity.TABLE)
 public class LoanEntity extends AbstractAuditable<Long> {
+    public static final String TABLE = "loan";
+
     @ManyToOne
     private MemberEntity member;
 
@@ -33,5 +35,6 @@ public class LoanEntity extends AbstractAuditable<Long> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastInstallmentDate;
 
+    @Lob
     private String description;
 }

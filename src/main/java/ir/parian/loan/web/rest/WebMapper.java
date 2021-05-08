@@ -1,14 +1,8 @@
 package ir.parian.loan.web.rest;
 
-import ir.parian.loan.service.dto.InstallmentDto;
-import ir.parian.loan.service.dto.LoanDto;
-import ir.parian.loan.service.dto.MemberDto;
-import ir.parian.loan.service.dto.NewLoanDto;
-import ir.parian.loan.web.rest.request.MemberRequest;
-import ir.parian.loan.web.rest.request.NewLoanRequest;
-import ir.parian.loan.web.rest.response.InstallmentResponse;
-import ir.parian.loan.web.rest.response.LoanResponse;
-import ir.parian.loan.web.rest.response.MemberResponse;
+import ir.parian.loan.service.dto.*;
+import ir.parian.loan.web.rest.request.*;
+import ir.parian.loan.web.rest.response.*;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -28,4 +22,20 @@ public interface WebMapper {
     LoanResponse toLoanResponse(LoanDto loanDto, List<InstallmentDto> installments);
 
     NewLoanDto toNewLoanDto(NewLoanRequest newLoanRequest);
+
+    RepayLoadDto toRepayLoanDto(RepayLoanRequest request, final Long id);
+
+    MemberAccountResponse toMemberAccountResponse(MemberAccountDto memberAccountDto);
+
+    NewMemberAccountDto toNewMemberAccountDto(NewMemberAccountRequest request);
+
+    TransactionResponse toTransactionResponse(TransactionDto transactionDto);
+
+    NewTransactionDto toNewTransactionDto(NewTransactionRequest request, Long memberAccountId);
+
+    MonthlyResponse toMonthlyResponse(MonthlyDto monthlyDto);
+
+    UpdateAccountDto toUpdateAccountDto(final Long memberAccountId, UpdateAccountRequest request);
+
+    PayMonthlyDto toPayMonthlyDto(Long memberAccountId, Long monthlyId, PayMonthlyRequest request);
 }

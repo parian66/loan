@@ -1,17 +1,15 @@
 package ir.parian.loan.data.entity;
 
+import ir.parian.loan.service.enums.Role;
 import lombok.Data;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Data
-public class UserEntity extends AbstractPersistable<Long> {
-    public enum Role {
-        ADMIN, USER;
-    }
+@Entity(name = UserEntity.TABLE)
+public class UserEntity extends AbstractAuditable<Long> {
+    public static final String TABLE = "user_table";
 
     @Column(nullable = false)
     private String username;

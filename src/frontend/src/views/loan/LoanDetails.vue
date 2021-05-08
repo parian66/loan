@@ -1,11 +1,24 @@
 <template>
   <v-container
-      fluid
-      tag="section">
+    fluid
+    tag="section">
     <v-card>
+      <v-card-actions>
+        <v-btn @click="$router.push({path:'/loans'})">
+          {{ $t('back') }}
+        </v-btn>
+
+        <v-spacer />
+
+        <v-btn @click="dialog.open = true" :disabled="!remainCount">
+          {{ $t('repay') }}
+        </v-btn>
+      </v-card-actions>
+
       <v-card-title>
         {{ $t('loanDetailsTitle', [loanId]) }}
       </v-card-title>
+
       <v-card-text v-if="loan.member">
         <v-row>
           <v-col>
@@ -80,14 +93,6 @@
           </template>
         </v-simple-table>
       </v-card-text>
-      <v-card-actions>
-        <v-btn @click="$router.push({path:'/loans'})">
-          {{ $t('back') }}
-        </v-btn>
-        <v-btn @click="dialog.open = true" :disabled="!remainCount">
-          {{ $t('repay') }}
-        </v-btn>
-      </v-card-actions>
     </v-card>
     <v-dialog v-model="dialog.open" persistent max-width="600px">
       <validation-observer ref="observer" v-slot="{ invalid }">
@@ -106,13 +111,13 @@
             <v-row justify="center">
               <v-col cols="6">
                 <validation-provider
-                    v-slot="{ errors }"
-                    :name="$t('installmentCount')"
-                    :rules="`required|numeric|min_value:1|max_value:${remainCount}`">
+                  v-slot="{ errors }"
+                  :name="$t('installmentCount')"
+                  :rules="`required|numeric|min_value:1|max_value:${remainCount}`">
                   <v-text-field
-                      v-model="dialog.count"
-                      :label="$t('howManyInstallmentDoYouWantToRepay')"
-                      :error-messages="errors" />
+                    v-model="dialog.count"
+                    :label="$t('howManyInstallmentDoYouWantToRepay')"
+                    :error-messages="errors" />
                 </validation-provider>
               </v-col>
             </v-row>
@@ -136,7 +141,6 @@ import DatePicker from '../../components/DatePicker'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 
 export default {
-  name: 'Loans',
   components: {
     MemberPicker,
     ValidationObserver,
@@ -152,7 +156,7 @@ export default {
 
   props: {
     loanId: {
-      type: [Number, String],
+      type: [Number],
       required: true
     },
   },

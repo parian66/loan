@@ -4,6 +4,8 @@
       tag="section">
     <v-card>
       <v-card-title>
+        {{$t('loans')}}
+        <v-spacer />
         <v-btn @click="$router.push({name:'NewLoan'})">{{ $t('newLoan') }}</v-btn>
       </v-card-title>
 
@@ -15,7 +17,7 @@
           :loading="loading">
 
         <template v-slot:item.member="{ item }">
-          {{ item.member.firstName }} {{ item.member.lastName }}
+          {{ item.member.lastName }} - {{ item.member.firstName }}
         </template>
 
         <template v-slot:item.amount="{ item }">
@@ -33,9 +35,9 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon large class="mr-2" @click="$router.push({name:'LoanDetails',params:{loanId:item.id}})">
-            mdi-eye
-          </v-icon>
+          <v-btn @click="$router.push({name:'LoanDetails',params:{loanId:item.id}})">
+            {{ $t('view') }}
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -74,6 +76,7 @@ export default {
         sortAscending: [false]
       },
       headers: [
+        { text: this.$t('code'), value: 'id', sortable: false },
         { text: this.$t('member'), value: 'member', sortable: false },
         { text: this.$t('amount'), value: 'amount', sortable: false },
         { text: `${this.$t('rate')} %`, value: 'rate', sortable: false },

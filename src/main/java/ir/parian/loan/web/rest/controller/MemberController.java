@@ -15,12 +15,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/member")
 public class MemberController {
-    private final WebMapper memberMapper;
+    private final WebMapper webMapper;
     private final MemberService memberService;
 
-    public MemberController(final WebMapper memberMapper,
+    public MemberController(final WebMapper webMapper,
                             final MemberService memberService) {
-        this.memberMapper = memberMapper;
+        this.webMapper = webMapper;
         this.memberService = memberService;
     }
 
@@ -28,24 +28,24 @@ public class MemberController {
     public Page<MemberResponse> getMembers(final Pageable pageRequest,
                                            final @RequestParam(required = false) String search) {
         return memberService.search(search, pageRequest)
-                .map(memberMapper::toMemberResponse);
+                .map(webMapper::toMemberResponse);
     }
 
     @GetMapping(path = "{id}")
     public ResponseEntity<MemberResponse> getMember(final @PathVariable("id") Long id) {
-        return ResponseEntity.of(memberService.findById(id).map(memberMapper::toMemberResponse));
+        return ResponseEntity.of(memberService.findById(id).map(webMapper::toMemberResponse));
     }
 
     @PostMapping
     public void createMember(final @Valid @RequestBody MemberRequest request) {
-        final MemberDto memberDto = memberMapper.toMemberDto(request);
+        final MemberDto memberDto = webMapper.toMemberDto(request);
         memberService.saveOrUpdate(memberDto);
     }
 
     @PutMapping(path = "{id}")
     public void updateMember(final @PathVariable("id") Long id,
                              final @Valid @RequestBody MemberRequest request) {
-        final MemberDto memberDto = memberMapper.toMemberDto(id, request);
+        final MemberDto memberDto = webMapper.toMemberDto(id, request);
         memberService.saveOrUpdate(memberDto);
     }
 

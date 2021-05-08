@@ -1,4 +1,4 @@
-package ir.parian.loan.service;
+package ir.parian.loan.service.impl;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;

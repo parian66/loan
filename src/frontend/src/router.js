@@ -13,9 +13,13 @@ const Management = () => import('./views/home/Management')
 // views/loan
 const LoanIndex = () => import('./views/loan/Index')
 const LoanList = () => import('./views/loan/LoanList')
-const LoanDetail = () => import('./views/loan/LoanDetail')
+const LoanDetails = () => import('./views/loan/LoanDetails')
 const NewLoan = () => import('./views/loan/NewLoan')
 
+// views/account
+const AccountIndex = () => import('./views/account/Index')
+const AccountList = () => import('./views/account/AccountList')
+const AccountDetails = () => import('./views/account/AccountDetails')
 
 Vue.use(VueRouter)
 
@@ -24,14 +28,28 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/members',
+      redirect: '/accounts',
       name: 'Home',
       component: Home,
       children: [
         {
-          path: 'members',
-          name: 'Members',
-          component: Members
+          path: 'accounts',
+          name: 'AccountIndex',
+          redirect: '/accounts',
+          component: AccountIndex,
+          children: [
+            {
+              path: '',
+              name: 'AccountList',
+              component: AccountList
+            },
+            {
+              path: ':accountId',
+              name: 'AccountDetails',
+              props: true,
+              component: AccountDetails
+            }
+          ]
         },
         {
           path: 'loans',
@@ -48,7 +66,7 @@ const router = new VueRouter({
               path: ':loanId',
               name: 'LoanDetails',
               props: true,
-              component: LoanDetail
+              component: LoanDetails
             },
             {
               path: 'new',
@@ -56,6 +74,11 @@ const router = new VueRouter({
               component: NewLoan
             },
           ]
+        },
+        {
+          path: 'members',
+          name: 'Members',
+          component: Members
         },
         {
           path: 'management',

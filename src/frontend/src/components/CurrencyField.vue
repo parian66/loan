@@ -1,14 +1,20 @@
 <template>
   <div>
-    <vuetify-money
+    <validation-provider
         v-if="!disabled"
-        v-model="cmpValue"
-        v-bind:label="label"
-        v-bind:placeholder="placeholder"
-        v-bind:readonly="readonly"
-        v-bind:valueWhenIsEmpty="null"
-        v-bind:options="options"
-        v-bind:error-messages="errorMessages" />
+        v-slot="{ errors }"
+        :name="label"
+        :rules="rules">
+      <vuetify-money
+          v-model="cmpValue"
+          v-bind:label="label"
+          v-bind:placeholder="placeholder"
+          v-bind:readonly="readonly"
+          v-bind:valueWhenIsEmpty="null"
+          v-bind:options="options"
+          v-bind:error-messages="errors" />
+    </validation-provider>
+
     <template v-else>
       {{ label ? label + ': ' : '' }} {{ humanFormat }}
     </template>
@@ -16,14 +22,21 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
+
 export default {
   name: 'CurrencyField',
+  components: { ValidationProvider },
   model: { prop: 'value', event: 'input' },
   props: {
     value: {
       type: [Number],
     },
     label: {
+      type: String,
+      default: ''
+    },
+    rules: {
       type: String,
       default: ''
     },
@@ -38,10 +51,6 @@ export default {
     readonly: {
       type: Boolean,
       default: false
-    },
-    errorMessages: {
-      type: [Array, String],
-      default: () => []
     },
   },
   data () {

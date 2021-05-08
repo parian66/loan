@@ -8,7 +8,6 @@
       <v-list-item-icon>
         <v-icon>{{ icon }}</v-icon>
       </v-list-item-icon>
-
       <v-list-item-content>
         <v-list-item-title>{{ text }}</v-list-item-title>
       </v-list-item-content>
@@ -23,8 +22,9 @@ export default {
   data () {
     return {
       items: [
-        ['mdi-account-group', this.$t('members'), '/members'],
+        ['mdi-cash', this.$t('accounts'), '/accounts'],
         ['mdi-bank', this.$t('loans'), '/loans'],
+        ['mdi-account-group', this.$t('members'), '/members'],
         ['mdi-tune-vertical', this.$t('management'), '/management'],
         ['mdi-logout', this.$t('logout'), '/login']
       ]

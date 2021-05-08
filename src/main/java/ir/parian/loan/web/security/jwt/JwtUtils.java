@@ -1,7 +1,7 @@
 package ir.parian.loan.web.security.jwt;
 
 import io.jsonwebtoken.*;
-import ir.parian.loan.service.dto.UserDetailsImpl;
+import ir.parian.loan.web.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

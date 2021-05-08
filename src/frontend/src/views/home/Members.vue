@@ -119,7 +119,9 @@
           :loading="loading">
 
         <template v-slot:item.actions="{ item }">
-          <v-icon large class="mr-2" @click="editItem(item.id)">mdi-pencil</v-icon>
+          <v-btn @click="editItem(item.id)">
+            {{ $t('edit') }}
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -154,6 +156,7 @@ export default {
         sortAscending: [true, true]
       },
       headers: [
+        { text: this.$t('code'), value: 'id', sortable: false },
         { text: this.$t('lastName'), value: 'lastName', sortable: true },
         { text: this.$t('firstName'), value: 'firstName', sortable: true },
         { text: this.$t('nationalCode'), value: 'nationalCode', sortable: false },
@@ -162,12 +165,6 @@ export default {
       ],
       editedId: undefined,
       editedItem: {
-        firstName: undefined,
-        lastName: undefined,
-        nationalCode: undefined,
-        phoneNumber: undefined
-      },
-      defaultItem: {
         firstName: undefined,
         lastName: undefined,
         nationalCode: undefined,
@@ -248,17 +245,20 @@ export default {
 
     close () {
       this.dialog = false
-      this.$nextTick(() => {
-        this.editedId = undefined
-        this.editedItem = Object.assign({}, this.defaultItem)
-      })
+      this.$refs.observer.reset()
+      this.editedId = undefined
+      this.editedItem = {
+        firstName: undefined,
+        lastName: undefined,
+        nationalCode: undefined,
+        phoneNumber: undefined
+      }
     },
 
     closeDelete () {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedId = undefined
-        this.editedItem = Object.assign({}, this.defaultItem)
       })
     },
 

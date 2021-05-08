@@ -3,7 +3,7 @@ package ir.parian.loan.web.rest.controller;
 import ir.parian.loan.web.rest.request.LoginRequest;
 import ir.parian.loan.web.rest.response.JwtResponse;
 import ir.parian.loan.web.security.jwt.JwtUtils;
-import ir.parian.loan.service.dto.UserDetailsImpl;
+import ir.parian.loan.web.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

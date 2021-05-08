@@ -11,13 +11,14 @@ import ir.parian.loan.service.dto.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 import static com.querydsl.core.types.dsl.Expressions.anyOf;
-import static ir.parian.loan.service.ExpressionHelper.cleanSearch;
-import static ir.parian.loan.service.ExpressionHelper.safeExpression;
+import static ir.parian.loan.service.impl.ExpressionHelper.cleanSearch;
+import static ir.parian.loan.service.impl.ExpressionHelper.safeExpression;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -31,18 +32,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<MemberDto> search(final String search, final Pageable pageRequest) {
         final Predicate expression = safeExpression(cleanSearch(search), toSearchPredicate());
         return memberRepository.findAll(expression, pageRequest).map(serviceMapper::toMemberDto);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<MemberDto> findById(final Long memberId) {
         return memberRepository.findById(memberId)
                 .map(serviceMapper::toMemberDto);
     }
 
     @Override
+    @Transactional
     public void saveOrUpdate(final MemberDto memberDto) {
         final MemberEntity memberEntity;
         if (memberDto.getId() == null) {
@@ -55,6 +59,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void deleteById(final Long memberId) {
         memberRepository.deleteById(memberId);
     }

@@ -45,12 +45,12 @@ public class LoanController {
     @PostMapping
     public LoanResponse createLoan(final @Valid @RequestBody NewLoanRequest newLoanRequest) {
         final NewLoanDto newLoanDto = webMapper.toNewLoanDto(newLoanRequest);
-        final LoanDto loanDto = loanService.create(newLoanDto);
+        final LoanDto loanDto = loanService.createLoan(newLoanDto);
         return webMapper.toLoanResponse(loanDto);
     }
 
     @PutMapping(path = "{id}/repay")
     public void repayLoan(final @PathVariable Long id, final @RequestBody RepayLoanRequest request) {
-        loanService.repay(id, request.getCount());
+        loanService.repay(webMapper.toRepayLoanDto(request, id));
     }
 }

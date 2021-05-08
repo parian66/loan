@@ -1,8 +1,8 @@
 package ir.parian.loan.web.security;
 
-import ir.parian.loan.data.entity.UserEntity;
-import ir.parian.loan.data.repository.UserRepository;
-import ir.parian.loan.service.impl.UserServiceImpl;
+import ir.parian.loan.service.UserService;
+import ir.parian.loan.service.dto.UserDto;
+import ir.parian.loan.service.enums.Role;
 import ir.parian.loan.web.security.jwt.AuthEntryPointJwt;
 import ir.parian.loan.web.security.jwt.AuthTokenFilter;
 import org.springframework.context.annotation.Bean;
@@ -29,39 +29,35 @@ import java.util.Collections;
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final AuthTokenFilter authTokenFilter;
     private final AuthEntryPointJwt unauthorizedHandler;
-    private final UserRepository userRepository;
-    private final UserServiceImpl userDetailsService;
+    private final UserService userService;
 
-    public WebSecurityConfig(final AuthEntryPointJwt unauthorizedHandler,
-                             final UserRepository userRepository,
-                             final UserServiceImpl userDetailsService) {
+    public WebSecurityConfig(final AuthTokenFilter authTokenFilter,
+                             final AuthEntryPointJwt unauthorizedHandler,
+                             final UserService userService) {
+        this.authTokenFilter = authTokenFilter;
         this.unauthorizedHandler = unauthorizedHandler;
-        this.userRepository = userRepository;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @PostConstruct
     private void init() {
-        if (!userRepository.existsByUsername("admin")) {
-            UserEntity admin = new UserEntity();
+        if (userService.findByUsername("admin").isEmpty()) {
+            UserDto admin = new UserDto();
             admin.setUsername("admin");
             admin.setEnabled(true);
             admin.setEmail("admin@example.com");
             admin.setPassword(passwordEncoder.encode("admin"));
-            admin.setRoles(Collections.singleton(UserEntity.Role.ADMIN));
-            userRepository.save(admin);
+            admin.setRoles(Collections.singleton(Role.ADMIN));
+            userService.saveOrUpdate(admin);
         }
-    }
-
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(userService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -84,6 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
