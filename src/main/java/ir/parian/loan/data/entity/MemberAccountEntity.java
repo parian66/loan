@@ -16,7 +16,6 @@ public class MemberAccountEntity extends AccountEntity {
     @ManyToOne
     private MemberEntity member;
 
-    @Column(nullable = false)
     private BigDecimal monthlyAmount;
 
     private BigDecimal overdueMonthlyAmount;
